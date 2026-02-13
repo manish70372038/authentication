@@ -1,0 +1,29 @@
+__________________server logs at terminal____________
+
+Server running at http://localhost:3000
+GET /
+GET / -> 304 (14ms)
+POST /auth/login
+[OTP] Session 04rx9a generated with OTP 817510
+POST /auth/login -> 200 (26ms)
+POST /auth/verify-otp
+POST /auth/verify-otp -> 200 (4ms)
+POST /auth/token
+POST /auth/token -> 200 (7ms)
+GET /protected
+GET /protected -> 200 (4ms)
+
+_________________REQUEST AND RESPONSE LOGS___________
+
+Microsoft Windows [Version 10.0.26100.7623]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\hakim>curl -X POST http://localhost:3000/auth/login -H "Content-Type: application/json" -d "{\"email\":\"manishkumar@gmail.com\",\"password\":\"password123\"}"
+{"message":"OTP sent","loginSessionId":"04rx9a"}
+C:\Users\hakim>curl -c cookies.txt -X POST http://localhost:3000/auth/verify-otp -H "Content-Type: application/json" -d "{\"loginSessionId\":\"04rx9a\",\"otp\":\"817510\"}"
+{"message":"OTP verified","sessionId":"04rx9a"}
+C:\Users\hakim>curl -b cookies.txt -X POST http://localhost:3000/auth/token
+{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbmlzaGt1bWFyQGdtYWlsLmNvbSIsInNlc3Npb25JZCI6IjA0cng5YSIsImlhdCI6MTc3MDk4ODAwNiwiZXhwIjoxNzcwOTg4OTA2fQ.J_1Q6qNsuFI2eVzfA_fg5C6nxp97-bcDJW937MqjLdI","expires_in":900}
+C:\Users\hakim>curl -X GET http://localhost:3000/protected -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbmlzaGt1bWFyQGdtYWlsLmNvbSIsInNlc3Npb25JZCI6IjA0cng5YSIsImlhdCI6MTc3MDk4ODAwNiwiZXhwIjoxNzcwOTg4OTA2fQ.J_1Q6qNsuFI2eVzfA_fg5C6nxp97-bcDJW937MqjLdI" http://localhost:3000/protected
+{"message":"Access granted","user":{"email":"manishkumar@gmail.com","sessionId":"04rx9a","iat":1770988006,"exp":1770988906},"success_flag":"FLAG-bWFuaXNoa3VtYXJAZ21haWwuY29tX0NPTVBMRVRFRF9BU1NJR05NRU5U"}{"message":"Access granted","user":{"email":"manishkumar@gmail.com","sessionId":"04rx9a","iat":1770988006,"exp":1770988906},"success_flag":"FLAG-bWFuaXNoa3VtYXJAZ21haWwuY29tX0NPTVBMRVRFRF9BU1NJR05NRU5U"}
+C:\Users\hakim>
